@@ -14,6 +14,7 @@ int slx, sly;
 int borderx = 75;
 int bordery = 65;
 boolean lines = true;
+PGraphics pg;
 
 void setup(){
   size(600, 600);
@@ -37,10 +38,19 @@ void setup(){
   text("ERASE", 455, 21);
   slx = 35;
   sly = 240;
+  
+  //pg = createGraphics(600, 600);
 }
 
 void draw(){
-  //System.out.println(mouseX+" , "+mouseY);
+  //pg.beginDraw();
+  //pg.background(0, 0);
+  //pg.noFill();
+  //pg.stroke(0);
+  //pg.ellipse(mouseX-120, mouseY-60, 30, 30);
+  //pg.endDraw();
+  //image(pg, 120, 60);
+  System.out.println(mouseX+" , "+mouseY);
   if(mousePressed && mouseX>=borderx && mouseY>=bordery){
      stroke(drawingColor, opacity);
      strokeWeight(linesize);
