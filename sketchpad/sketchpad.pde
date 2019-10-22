@@ -21,6 +21,8 @@ boolean lines = true;
 //PGraphics pg2;
 public static LayersSketch l;
 boolean thumbnail = false;
+boolean clear = false;
+int size = 10;
 
 void settings(){
   size(600, 600);
@@ -29,25 +31,9 @@ void settings(){
 
 void setup(){
   background(backc);
-  fill(80);
-  stroke(80);
-  rect(0, 0, 70, 600);
-  rect(0, 0, 600, 60);
-  stroke(0);
-  int w = 20;
-  for(int i : c){
-    fill(i);
-    ellipse(35, w, 20, 20);
-    w+=30;
-  }
-  rect(521, 10, 50, 15);
-  rect(450, 10, 50, 15);
-  
-  fill(0, 0, 255);
-  text("CLEAR", 525, 21);
-  text("ERASE", 455, 21);
   slx = 35;
   sly = 240;
+  
   
   //pg = createGraphics(700, 600);
   //pg2 = createGraphics(700, 600);
@@ -59,6 +45,26 @@ void setup(){
   
 }
 void draw(){
+  
+  fill(80);
+  stroke(80);
+  rect(0, 0, 70, 600);
+  rect(0, 0, 600, 60);
+  stroke(0);
+  int w = 20;
+  for(int i : c){
+    fill(i);
+    ellipse(35, w, 20, 20);
+    w+=30;
+  }
+
+  fill(60);
+  rect(521, 10, 50, 15);
+  rect(450, 10, 50, 15);
+  
+  fill(0, 0, 255);
+  text("CLEAR", 525, 21);
+  text("ERASE", 455, 21);
   
   //System.out.println(mouseX+" , "+mouseY);
   
@@ -75,26 +81,34 @@ void draw(){
      //pg.endDraw();
      System.out.println("hi");
   }
+  
   fill(200);
   strokeWeight(2);
   stroke(0);
-  rect(20, 225, 30, 120);
+  rect(20, 225, 30, 130);
   line(35, 230, 35, 340);
-  fill(100);
-  ellipse(slx, sly, 10, 10);
+  fill(drawingColor);
+  ellipse(slx, sly, size, size);
+ 
   if(mousePressed && dist(slx, sly, mouseX, mouseY)<20 && mouseY>230 && mouseY < 340){
     sly = mouseY;
-    ellipse(35, sly, 10, 10);
-    if(lines)
+    
+    
+    if(lines){
     linesize = (int)map(sly, 230, 340, 1, 20);
+    size = (int)map(sly, 230, 340, 10, 20);
+    }
     else{
       opacity = (int)map(sly, 230, 340, 255, 0);
     }
+    ellipse(35, sly, size, size);
     //borderx = (int)map(mouseY, 1, 5, 2, 6);
     //bordery = (int)map(mouseY, 1, 5, 2, 6);
     System.out.println(linesize);
+     fill(100);
   }
   
+  fill(60);
   rect(300, 10, 130, 15);
   fill(0, 0, 255);
   if(lines){
@@ -137,10 +151,22 @@ void mouseReleased(){
      drawingColor = G;
    }
    if(mouseX >= 525 && mouseX <= 521+50 && mouseY >= 10 && mouseY <=10+15){
-     l.getPG().beginDraw();
-     l.getPG().fill(backc);
-     l.getPG().rect(70, 60, 530, 540);
-     l.getPG().endDraw();
+     //l.getPG().beginDraw();
+     //l.getPG().fill(backc);
+     //l.getPG().rect(70, 60, 530, 540);
+     //l.getPG().endDraw();
+     clear = true;
+      if(clear){
+         System.out.println("hello");
+          l.getPG().beginDraw(); 
+          l.getPG().clear();
+          l.getPG().endDraw();
+          clear();
+          background(255);
+          l.clear = true;
+     clear = false;
+  }
+    
    } 
    if(mouseX >= 455 && mouseX <= 455+50 && mouseY >= 10 && mouseY <=10+15){
      drawingColor = backc;
@@ -160,6 +186,7 @@ public class LayersSketch extends PApplet{
   public ArrayList<PGraphics> list = new ArrayList<PGraphics>();
   int on;
   int name = 4;
+  boolean clear = false;
   public PGraphics background, Layer1, Layer2, Layer3;
   public LayersSketch(){
     background = new PGraphics();
@@ -178,14 +205,20 @@ public class LayersSketch extends PApplet{
     
   }
   public void setup(){
-     background = createGraphics(700, 600);
+    background = createGraphics(700, 600);
     Layer1 = createGraphics(700, 600);
     Layer2 = createGraphics(700, 600);
     Layer3 = createGraphics(700, 600);
+    rect(15, 20, 30, 40);
+    rect(15, 120, 30, 40);
+    rect(15, 220, 30, 40);
+    rect(15, 320, 30, 40);
+  
+    
   }
   public void draw(){
    
-    
+   
     System.out.println(mouseX+", "+ mouseY);
     fill(255);
     //rect(20, 370, 50, 10);
@@ -234,6 +267,7 @@ public class LayersSketch extends PApplet{
       if(thumbnail)
       image(i, 10, 300);
     }
+  
     
     
     if(thumbnail){
@@ -272,6 +306,15 @@ public class LayersSketch extends PApplet{
     PImage img3 = Layer3.get();
     img3.resize(30, 40);
     image(img3, 15, 20);
+  }
+  if(clear){
+    System.out.println("yo");
+    fill(255);
+    rect(15, 20, 30, 40);
+    rect(15, 120, 30, 40);
+    rect(15, 220, 30, 40);
+    rect(15, 320, 30, 40);
+    clear = false;
   }
     }
   
