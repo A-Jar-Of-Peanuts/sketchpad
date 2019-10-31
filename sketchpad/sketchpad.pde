@@ -23,6 +23,7 @@ public static LayersSketch l;
 boolean thumbnail = false;
 boolean clear = false;
 int size = 10;
+int tool = 0;
 
 void settings(){
   size(600, 600);
@@ -53,27 +54,44 @@ void draw(){
   stroke(0);
   int w = 20;
   for(int i : c){
+    if(dist(35, w, mouseX, mouseY)<10){
+     strokeWeight(2);
+   }
     fill(i);
     ellipse(35, w, 20, 20);
+    strokeWeight(1);
     w+=30;
   }
-
+  if(mouseX>=521 && mouseX<=521+50 && mouseY>=10 && mouseY<=10+15){
+    strokeWeight(5);
+  }
   fill(60);
   rect(521, 10, 50, 15);
+  strokeWeight(1);
+  if(mouseX>=450 && mouseX<=450+50 && mouseY>=10 && mouseY<=10+15){
+    strokeWeight(5);
+  }
   rect(450, 10, 50, 15);
+  strokeWeight(1);
   
   fill(0, 0, 255);
   text("CLEAR", 525, 21);
   text("ERASE", 455, 21);
   
-  //System.out.println(mouseX+" , "+mouseY);
+  System.out.println(mouseX+" , "+mouseY);
   
   if(mousePressed && mouseX>=borderx && mouseY>=bordery){
+    if(tool == 0){
      l.getPG().beginDraw();
      l.getPG().stroke(drawingColor, opacity);
      l.getPG().strokeWeight(linesize);
      l.getPG().line(mouseX-75, mouseY-75, pmouseX-75, pmouseY-75);
      l.getPG().endDraw();
+    } else{
+      l.getPG().beginDraw();
+      l.getPG().image(loadImage("telephone.png"), mouseX-75, mouseY-75, 50, 50);
+      l.getPG().endDraw();
+    }
      //pg.beginDraw();
      //pg.stroke(drawingColor, opacity);
      //pg.strokeWeight(linesize);
@@ -108,14 +126,20 @@ void draw(){
      fill(100);
   }
   
+  if(mouseX >= 300 && mouseX <= 300+130 && mouseY >= 10 && mouseY <=10+15){
+    strokeWeight(5);
+    System.out.println("hi");
+   } 
   fill(60);
   rect(300, 10, 130, 15);
   fill(0, 0, 255);
+  
   if(lines){
     text("CHANGE LINE SIZE", 310, 21);
   } else{
     text("CHANGE OPACITY", 315, 21);
   }
+  strokeWeight(1);
   
   //pg.beginDraw();
   //pg.background(255);
@@ -123,8 +147,22 @@ void draw(){
   //pg.stroke(0);
   //pg.ellipse(mouseX-75, mouseY-75, 30, 30);
   //pg.endDraw();
-  
-  
+   
+    stroke(drawingColor);
+     if(mouseX>20 && mouseX<50 && mouseY>425 && mouseY<445){
+     strokeWeight(size+2);
+  } else{
+    strokeWeight(size);
+  }
+    
+    line(20, 430, 50, 430);
+    stroke(0);
+    strokeWeight(1);
+    if(mouseX>=20 && mouseX<=20+30 && mouseY>=380 && mouseY<=380+30){
+      image(loadImage("telephone.png"), 25, 385, 28, 28);
+    } else{
+      image(loadImage("telephone.png"), 20, 380, 30, 30);
+    }
     image(l.background, 75, 75);
     image(l.Layer1, 75, 75);
     image(l.Layer2, 75, 75);
@@ -134,6 +172,9 @@ void draw(){
 }
 
 void mouseReleased(){
+  if(mouseX>20 && mouseX<50 && mouseY>425 && mouseY<445){
+    tool = 0;
+  }
   if(dist(35, 20, mouseX, mouseY)<10){
      drawingColor = A;
    } else if(dist(35, 50, mouseX, mouseY)<10){
@@ -169,7 +210,7 @@ void mouseReleased(){
     
    } 
    if(mouseX >= 455 && mouseX <= 455+50 && mouseY >= 10 && mouseY <=10+15){
-     drawingColor = backc;
+     
    } 
    
    if(mouseX >= 300 && mouseX <= 300+130 && mouseY >= 10 && mouseY <=10+15){
@@ -177,6 +218,10 @@ void mouseReleased(){
      System.out.println("ok");
      //300, 10, 130, 15
    } 
+   
+   if(mouseX>=20 && mouseX<=20+30 && mouseY>=380 && mouseY<=380+30){
+     tool = 1;
+   }
    
    
 }
@@ -219,7 +264,7 @@ public class LayersSketch extends PApplet{
   public void draw(){
    
    
-    System.out.println(mouseX+", "+ mouseY);
+    //System.out.println(mouseX+", "+ mouseY);
     fill(255);
     //rect(20, 370, 50, 10);
     //fill(0);
